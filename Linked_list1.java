@@ -1,69 +1,99 @@
-import org.w3c.dom.Node;
+class Node {
+    int data;
+    Node next;
 
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
 
-    
+public class Linked_list1 {
 
-class Linked_list {
+    Node head;
 
-    // Node class (inner class)
-    class Node {
-        int data;       // value stored in node
-        Node next;      // reference to next node
-
-        Node(int data) {        // constructor
-            this.data = data;   // set value
-            this.next = null;   // next initially null
-        }
+    // INSERT AT BEGINNING
+    public void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
     }
 
-    Node head;    // head of linked list
+    // INSERT AT POSITION
+    public void insertAtPosition(int data, int position) {
+        Node newNode = new Node(data);
 
-    // Insert element at end of linked list
-    public void insert(int data) {
-        Node newNode = new Node(data);   // create new node
-
-        if (head == null) {     // if list is empty
-            head = newNode;     // new node becomes head
+        if(position == 1) {
+            newNode.next = head;
+            head = newNode;
             return;
         }
 
-        Node current = head;          // start from head
-        while (current.next != null) { // move to last node
-            current = current.next;
+        Node temp = head;
+        int i = 1;
+
+        while(i < position - 1 && temp != null) {
+            temp = temp.next;
+            i++;
         }
 
-        current.next = newNode;    // connect last node to new node
+        if(temp == null) {
+            System.out.println("Invalid Position");
+            return;
+        }
+
+        newNode.next = temp.next;
+        temp.next = newNode;
     }
 
-    // Print entire linked list
+    // DELETE NODE BY VALUE
+    public void deleteNode(int value) {
+        if(head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        if(head.data == value) {
+            head = head.next;
+            return;
+        }
+
+        Node temp = head;
+        while(temp.next != null && temp.next.data != value) {
+            temp = temp.next;
+        }
+
+        if(temp.next == null) {
+            System.out.println("Value not found");
+            return;
+        }
+
+        temp.next = temp.next.next;
+    }
+
+    // PRINT LINKED LIST
     public void printList() {
-        Node current = head;     // start at head
-
-        while (current != null) {     // traverse until null
-            System.out.print(current.data + " -> ");
-            current = current.next;
+        Node temp = head;
+        while(temp != null) {
+            System.out.print(temp.data + " -> ");
+            temp = temp.next;
         }
-
-        System.out.println("null");   // end of list
+        System.out.println("NULL");
     }
-}
 
-
-// Main class to run the program
-public class Linked_list1 {
+    // MAIN
     public static void main(String[] args) {
+        Linked_list1 ll = new Linked_list1();
 
-        Linked_list list = new Linked_list(); // create linked list object
+        ll.insertAtBeginning(30);
+        ll.insertAtBeginning(20);
+        ll.insertAtBeginning(10);
+        ll.printList();
 
-        // insert values
-        list.insert(10);
-        list.insert(20);
-        list.insert(30);
-        list.insert(40);
+        ll.insertAtPosition(25, 3);
+        ll.printList();
 
-        // print
-        list.printList();
+        ll.deleteNode(20);
+        ll.printList();
     }
 }
-
-
